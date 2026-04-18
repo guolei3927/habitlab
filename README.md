@@ -6,6 +6,7 @@
 - **项目路径**：`/Users/lei/WorkBuddy/20260418061904/habitflow.cc/`
 - **GitHub**：https://github.com/guolei3927/habitlab
 - **部署平台**：Vercel（自动部署，关联 GitHub 仓库）
+- **线上地址**：https://habitlab-opal.vercel.app/
 - **技术栈**：纯 HTML + CSS + JavaScript，无构建工具
 
 ## 日常开发工作流
