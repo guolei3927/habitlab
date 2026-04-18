@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#FDFCFF" />
+  <title>习惯匹配器 — HabitLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    /* ── Quiz ── */
+    .quiz-card { max-width: 600px; margin: 0 auto; }
+    .quiz-progress { display: flex; gap: 6px; margin-bottom: 32px; }
+    .quiz-dot { flex: 1; height: 6px; border-radius: 3px; background: var(--border); transition: background 0.3s; }
+    .quiz-dot.active { background: var(--primary); }
+    .quiz-dot.done { background: var(--green); }
+    .quiz-question {
+      font-family: 'Lora', serif; font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 8px; text-align: center;
+    }
+    .quiz-subtitle { font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 24px; }
+    .quiz-options { display: flex; flex-direction: column; gap: 10px; }
+    .quiz-option {
+      padding: 14px 18px; border: 2px solid var(--border); border-radius: 14px;
+      font-size: 15px; font-weight: 600; color: var(--text);
+      cursor: pointer; transition: all 0.2s; background: var(--card); text-align: left;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .quiz-option:hover { border-color: var(--primary-light); transform: translateX(4px); }
+    .quiz-option.selected { border-color: var(--primary); background: var(--primary-pale); }
+    .quiz-option .opt-icon { font-size: 20px; flex-shrink: 0; }
+
+    /* ── Result ── */
+    .quiz-result { text-align: center; display: none; }
+    .quiz-result.show { display: block; }
+
+    .result-main {
+      background: linear-gradient(135deg, var(--primary), #5B21B6);
+      color: white; border-radius: 20px; padding: 36px 28px; margin-bottom: 20px;
+    }
+    .result-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.1em;
+      opacity: 0.7; margin-bottom: 12px;
+    }
+    .result-habit-name { font-family: 'Lora', serif; font-size: 1.7rem; font-weight: 700; margin-bottom: 4px; }
+    .result-habit-emoji { font-size: 40px; margin-bottom: 12px; }
+    .result-meta {
+      display: flex; justify-content: center; gap: 16px; margin-top: 16px;
+      font-size: 12px; opacity: 0.8;
+    }
+    .result-meta span { display: flex; align-items: center; gap: 4px; }
+
+    .result-section {
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 16px;
+      padding: 20px; margin-bottom: 16px; text-align: left;
+    }
+    .result-section h3 {
+      font-size: 14px; font-weight: 700; margin-bottom: 10px;
+      display: flex; align-items: center; gap: 6px; color: var(--text);
+    }
+    .result-section p, .result-section li {
+      font-size: 14px; color: var(--text-body); line-height: 1.7;
+    }
+    .result-section ul { padding-left: 0; list-style: none; margin: 0; }
+    .result-section li { padding: 3px 0; display: flex; align-items: flex-start; gap: 8px; }
+    .result-section li::before { content: "✓"; color: var(--green); font-weight: 700; flex-shrink: 0; margin-top: 2px; }
+    .result-reason {
+      font-size: 14px; color: var(--text-body); line-height: 1.8;
+      margin-bottom: 20px; padding: 16px 18px;
+      background: var(--green-light); border-radius: 12px; text-align: left;
+    }
+
+    /* ── Alternatives ── */
+    .result-alts { margin-top: 28px; }
+    .result-alts h3 {
+      font-size: 15px; font-weight: 700; margin-bottom: 12px; color: var(--text);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .alt-card {
+      display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 14px;
+      cursor: pointer; transition: all 0.2s; text-align: left;
+    }
+    .alt-card:hover { border-color: var(--primary-light); }
+    .alt-emoji { font-size: 28px; flex-shrink: 0; }
+    .alt-info { flex: 1; min-width: 0; }
+    .alt-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .alt-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .alt-tag {
+      font-size: 11px; padding: 3px 10px; border-radius: 20px; font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .quiz-question { font-size: 1.15rem; }
+      .quiz-option { padding: 12px 14px; font-size: 14px; }
+      .result-main { padding: 28px 20px; }
+      .result-habit-name { font-size: 1.4rem; }
+      .result-meta { flex-wrap: wrap; justify-content: center; }
+    }
+    @media (max-width: 360px) {
+      .quiz-question { font-size: 1.05rem; }
+      .quiz-option { padding: 10px 12px; font-size: 13px; }
+      .quiz-option .opt-icon { font-size: 18px; }
+      .alt-card { padding: 12px 14px; gap: 10px; }
+      .alt-emoji { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile Menu Overlay -->
+<div class="nav-overlay"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><span class="logo-icon">🧪</span><span class="logo-text">Habit<span class="logo-highlight">Lab</span></span></a>
+    <div class="nav-links">
+      <a href="/">首页</a>
+      <a href="/articles.html">文章</a>
+      <a href="/lab.html" class="active">实验室</a>
+      <a href="/about.html">关于</a>
+      <a href="/articles/the-power-of-micro-habits.html" class="nav-cta">开始阅读</a>
+    </div>
+    <button class="nav-hamburger" aria-label="菜单"><span></span></button>
+  </div>
+</nav>
+
+<div class="page-header fade-in" style="padding-bottom: 24px;">
+  <div class="container">
+    <a href="/lab.html" class="back-link" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);font-weight:600;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      返回实验室
+    </a>
+    <h1 style="margin-top: 16px;">习惯匹配器</h1>
+    <p style="color: var(--text-muted); font-size: 15px;">回答 4 个问题，从 65 个科学微习惯中找到最适合你的</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="quiz-card">
+      <!-- Progress -->
+      <div class="quiz-progress" id="progress-bar"></div>
+
+      <!-- Quiz Container -->
+      <div id="quiz-container"></div>
+
+      <!-- Result -->
+      <div class="quiz-result" id="quiz-result">
+        <div class="result-main fade-in" id="result-main"></div>
+        <div class="result-reason fade-in" id="result-reason"></div>
+
+        <!-- Science & Benefits -->
+        <div class="result-section fade-in" id="result-science"></div>
+        <div class="result-section fade-in" id="result-benefits"></div>
+        <div class="result-section fade-in" id="result-tips"></div>
+
+        <!-- Alternatives -->
+        <div class="result-alts fade-in" id="result-alts"></div>
+
+        <!-- Actions -->
+        <div class="fade-in" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:24px;">
+          <a href="/articles/the-power-of-micro-habits.html" class="btn btn-primary">读完这篇文章再开始</a>
+          <button class="btn btn-outline" onclick="restart()">重新测试</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-icon">🧪</span> HabitLab</div>
+      <div class="footer-links">
+        <a href="/">首页</a><a href="/articles.html">文章</a><a href="/lab.html">实验室</a><a href="/about.html">关于</a>
+      </div>
+      <div class="footer-copy">© 2026 HabitLab. 用微习惯的科学方法，持续变好。</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+<script>
+// ── Load Habit Database ──
+let habits = [];
+
+// Q1 目标, Q2 时间(严格分层), Q3 场景, Q4 感觉
+const questions = [
+  {
+    q: "你目前最想改善的是什么？",
+    sub: "选择一个最贴近你现状的选项",
+    options: [
+      { icon: "🔋", text: "精力不足，总觉得累", value: "energy" },
+      { icon: "⚖️", text: "体重超标，想控制一下", value: "weight" },
+      { icon: "🛌", text: "睡眠质量差，入睡困难", value: "sleep" },
+      { icon: "😰", text: "压力太大，心态焦虑", value: "stress" },
+      { icon: "🧠", text: "想自我提升，持续成长", value: "growth" },
+      { icon: "⚡", text: "工作效率低，总是拖延", value: "productivity" }
+    ]
+  },
+  {
+    q: "你每天能投入多少时间？",
+    sub: "越短越容易坚持——这是我们推荐的核心理念",
+    options: [
+      { icon: "⚡", text: "不用额外花时间（改变已有行为）", value: "none" },
+      { icon: "💨", text: "30秒以内", value: "30s" },
+      { icon: "1️⃣", text: "1-2分钟", value: "1min" },
+      { icon: "⏱️", text: "3-5分钟", value: "3min" },
+      { icon: "🕐", text: "10分钟左右", value: "10min" }
+    ]
+  },
+  {
+    q: "你更喜欢在什么时候做？",
+    sub: "选择你最容易记住、最自然的时间段",
+    options: [
+      { icon: "🌅", text: "早上起床后", value: "morning" },
+      { icon: "💼", text: "工作/学习间隙", value: "work" },
+      { icon: "🍽️", text: "吃饭前后", value: "meal" },
+      { icon: "🌆", text: "下午时段", value: "afternoon" },
+      { icon: "🌙", text: "晚上/睡前", value: "night" },
+      { icon: "🔄", text: "随时都行", value: "flexible" }
+    ]
+  },
+  {
+    q: "你希望这个习惯带来什么感觉？",
+    sub: "没有对错——了解你的内在动力",
+    options: [
+      { icon: "💪", text: "身体更强壮、更有活力", value: "physical" },
+      { icon: "😌", text: "内心更平静、更少焦虑", value: "calm" },
+      { icon: "🧠", text: "大脑更清醒、思维更敏捷", value: "mental" },
+      { icon: "🎯", text: "生活更有秩序、更高效", value: "order" }
+    ]
+  }
+];
+
+const totalSteps = questions.length;
+
+async function loadHabits() {
+  try {
+    const res = await fetch('/data/habits.json');
+    const data = await res.json();
+    habits = data.habits;
+    renderStep(0);
+  } catch(e) {
+    document.getElementById('quiz-container').innerHTML =
+      '<p style="text-align:center;color:var(--text-muted);">加载习惯数据失败，请刷新页面重试。</p>';
+  }
+}
+
+function renderProgressBar(current) {
+  const bar = document.getElementById('progress-bar');
+  bar.innerHTML = '';
+  for (let i = 0; i < totalSteps; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'quiz-dot' + (i === current ? ' active' : i < current ? ' done' : '');
+    bar.appendChild(dot);
+  }
+}
+
+function renderStep(step) {
+  renderProgressBar(step);
+  const container = document.getElementById('quiz-container');
+  const q = questions[step];
+  let html = `<div class="quiz-step" id="step-${step}">`;
+  html += `<div class="quiz-question">${q.q}</div>`;
+  html += `<div class="quiz-subtitle">${q.sub}</div>`;
+  html += `<div class="quiz-options">`;
+  q.options.forEach((opt, i) => {
+    html += `<div class="quiz-option" onclick="next(${step}, ${i})">
+      <span class="opt-icon">${opt.icon}</span>
+      <span>${opt.text}</span>
+    </div>`;
+  });
+  html += '</div></div>';
+  container.innerHTML = html;
+  container.style.display = 'block';
+}
+
+const answers = [];
+
+function next(step, ansIndex) {
+  answers[step] = questions[step].options[ansIndex].value;
+  const opts = document.querySelectorAll(`#step-${step} .quiz-option`);
+  opts.forEach((o, i) => o.classList.toggle('selected', i === ansIndex));
+
+  setTimeout(() => {
+    if (step < totalSteps - 1) {
+      renderStep(step + 1);
+    } else {
+      document.getElementById('quiz-container').style.display = 'none';
+      document.getElementById('progress-bar').innerHTML = '';
+      showResult();
+    }
+  }, 300);
+}
+
+// ── Time matching: strictly tiered ──
+// none: time === 0 (no extra time needed)
+// 30s: time <= 30
+// 1min: time <= 120 (up to 2 min)
+// 3min: time <= 300 (up to 5 min)
+// 10min: time <= 600 (up to 10 min)
+const timeTiers = {
+  'none':  { maxTime: 0,   label: '不花额外时间' },
+  '30s':   { maxTime: 30,  label: '30秒以内' },
+  '1min':  { maxTime: 120, label: '1-2分钟' },
+  '3min':  { maxTime: 300, label: '3-5分钟' },
+  '10min': { maxTime: 600, label: '10分钟左右' }
+};
+
+function matchScore(habit, ans) {
+  let score = 0;
+
+  // Q1: Goal match (weight: 3)
+  const goalMap = {
+    'energy': ['energy', 'metabolism', 'cardio'],
+    'weight': ['weight', 'diet'],
+    'sleep': ['sleep'],
+    'stress': ['stress', 'mental', 'happiness', 'mood'],
+    'growth': ['growth', 'focus', 'memory', 'confidence'],
+    'productivity': ['focus', 'productivity']
+  };
+  const targetGoals = goalMap[ans[0]] || [ans[0]];
+  const matchCount = habit.goals.filter(g => targetGoals.includes(g)).length;
+  score += matchCount * 3;
+
+  // Q2: Time constraint (weight: 3) — strict tier matching
+  const tier = timeTiers[ans[1]];
+  if (tier && habit.time <= tier.maxTime) {
+    score += 3;
+    // Bonus: significantly less time than budget (e.g., "none" tier for 0-time habits is perfect)
+    if (habit.time === 0 && ans[1] === 'none') score += 2;
+  } else if (tier && habit.time <= tier.maxTime * 2) {
+    // Slight stretch: habit needs up to 2x the stated time → partial score
+    score += 1;
+  }
+
+  // Q3: Scenario match (weight: 2)
+  if (habit.scenario === ans[2] || habit.scenario === 'flexible' || ans[2] === 'flexible') {
+    score += 2;
+  } else {
+    const scenarioWords = {
+      'morning': ['起床', '早上', '早晨'],
+      'work': ['办公', '电脑', '工作', '坐', '屏幕'],
+      'meal': ['吃饭', '食物', '进食', '午餐', '晚餐'],
+      'afternoon': ['午后', '下午', '午休'],
+      'night': ['睡前', '睡觉', '晚上', '夜间']
+    };
+    const words = scenarioWords[ans[2]] || [];
+    const descMatch = words.some(w => habit.desc.includes(w) || (habit.triggers && habit.triggers.some(t => t.includes(w))));
+    if (descMatch) score += 1;
+  }
+
+  // Q4: Feeling desired (weight: 2) — uses habit-level feelings array
+  const feelingMap = {
+    'physical': ['physical'],
+    'calm': ['calm'],
+    'mental': ['mental'],
+    'order': ['order']
+  };
+  const targetFeelings = feelingMap[ans[3]] || [];
+  const feelings = habit.feelings || [];
+  const feelingMatch = feelings.filter(f => targetFeelings.includes(f)).length;
+  if (feelingMatch > 0) {
+    score += 2;
+    if (feelingMatch >= 2) score += 1;
+  } else {
+    const catFallback = {
+      'physical': ['health', 'diet'],
+      'calm': ['mental', 'sleep'],
+      'mental': ['growth', 'mental', 'productivity'],
+      'order': ['productivity']
+    };
+    if ((catFallback[ans[3]] || []).includes(habit.category)) score += 1;
+  }
+
+  return score;
+}
+
+function showResult() {
+  const scored = habits.map(h => ({ habit: h, score: matchScore(h, answers) }));
+  scored.sort((a, b) => b.score - a.score);
+
+  const best = scored[0];
+  const alts = scored.slice(1, 4);
+  const h = best.habit;
+
+  // Render main result
+  const timeText = h.time === 0 ? '不花额外时间' :
+                   h.time < 60 ? `${h.time} 秒` :
+                   h.time < 3600 ? `${h.time / 60} 分钟` : `${h.time / 3600} 小时`;
+  const diffText = ['', '超简单', '简单', '中等'][h.difficulty] || '简单';
+  const cat = h.category;
+
+  document.getElementById('result-main').innerHTML = `
+    <div class="result-habit-emoji">${h.emoji}</div>
+    <div class="result-badge">🎯 最佳匹配</div>
+    <div class="result-habit-name">${h.name}</div>
+    <div style="font-size:14px;opacity:0.85;margin-top:8px;line-height:1.6;">${h.desc}</div>
+    <div class="result-meta">
+      <span>⏱ ${timeText}</span>
+      <span>📊 难度：${diffText}</span>
+      <span>🏷️ ${cat === 'health' ? '身体健康' : cat === 'diet' ? '饮食营养' : cat === 'sleep' ? '睡眠恢复' : cat === 'mental' ? '心理健康' : cat === 'growth' ? '个人成长' : cat === 'productivity' ? '效率提升' : cat === 'social' ? '社交关系' : '数字健康'}</span>
+    </div>
+  `;
+
+  // Render reason — personalized based on answers
+  const reasons = [];
+  if (answers[0] === 'energy' && h.goals.includes('energy')) reasons.push('你希望改善精力，这个习惯能直接提升身体能量水平。');
+  if (answers[0] === 'weight' && h.goals.includes('weight')) reasons.push('你关注体重管理，这个习惯通过科学方式帮你自然控制体重。');
+  if (answers[0] === 'sleep' && h.goals.includes('sleep')) reasons.push('你受困于睡眠问题，这个习惯是改善睡眠质量的科学起点。');
+  if (answers[0] === 'stress' && (h.goals.includes('stress') || h.goals.includes('mental'))) reasons.push('你正在承受压力，这个习惯经过研究验证能有效缓解焦虑。');
+  if (answers[0] === 'growth' && (h.goals.includes('growth') || h.goals.includes('focus'))) reasons.push('你追求自我成长，这个习惯是持续进步的基石。');
+  if (answers[0] === 'productivity' && (h.goals.includes('focus') || h.goals.includes('productivity'))) reasons.push('你希望提升效率，这个习惯能帮你改善专注力和工作节奏。');
+
+  // Time-specific reason
+  const timeTier = timeTiers[answers[1]];
+  if (answers[1] === 'none' && h.time === 0) reasons.push('你说不想花额外时间——这个习惯完美契合，它只需要改变你已有的行为方式，零额外投入。');
+  else if (answers[1] === '30s' && h.time <= 30) reasons.push('你只有30秒，但这个习惯完全够用——比刷一条朋友圈还快，门槛低到不可能失败。');
+  else if (answers[1] === '1min' && h.time <= 120) reasons.push('这个习惯完美匹配你的时间预算，1-2分钟就能完成，不需要额外挤时间。');
+  else if (timeTier && h.time <= timeTier.maxTime) reasons.push('这个习惯在你的时间预算内就能完成，轻松无压力。');
+
+  if (h.difficulty === 1) reasons.push('难度极低，不需要任何特殊准备，随时可以开始。');
+
+  if (reasons.length === 0) reasons.push('根据你的综合情况，这个习惯在多个维度上都是最优选择。坚持两周，你会感受到变化。');
+
+  document.getElementById('result-reason').innerHTML = `<strong>💡 为什么推荐这个？</strong><br/>${reasons.join(' ')}`;
+
+  // Science section
+  document.getElementById('result-science').innerHTML = `
+    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> 科学依据</h3>
+    <p>${h.science}</p>
+  `;
+
+  // Benefits section
+  document.getElementById('result-benefits').innerHTML = `
+    <h3>✅ 坚持下去，你会获得</h3>
+    <ul>${h.benefits.map(b => `<li>${b}</li>`).join('')}</ul>
+  `;
+
+  // Tips + encouragement section
+  document.getElementById('result-tips').innerHTML = `
+    <h3>💡 实践建议</h3>
+    <p><strong>如何开始：</strong>${h.tip}</p>
+    <p style="margin-top:8px;"><strong>如果遇到困难：</strong>${h.counter}</p>
+    ${h.encouragement ? `<div style="margin-top:14px;padding:12px 16px;background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(5,150,105,0.06));border-radius:12px;font-size:14px;color:var(--text-body);line-height:1.7;"><strong>✨ ${h.emoji} 想对你说：</strong><br/>${h.encouragement}</div>` : ''}
+  `;
+
+  // Alternatives
+  const catColors = {
+    'health': '#059669', 'diet': '#F59E0B', 'sleep': '#6366F1',
+    'mental': '#EC4899', 'growth': '#7C3AED', 'productivity': '#0EA5E9',
+    'social': '#F97316', 'digital': '#8B5CF6'
+  };
+  const catNames = {
+    'health': '身体健康', 'diet': '饮食营养', 'sleep': '睡眠恢复',
+    'mental': '心理健康', 'growth': '个人成长', 'productivity': '效率提升',
+    'social': '社交关系', 'digital': '数字健康'
+  };
+  const altHtml = alts.map(a => {
+    const ah = a.habit;
+    const bgColor = catColors[ah.category] || '#999';
+    return `<div class="alt-card" onclick="showAlt('${ah.id}')">
+      <span class="alt-emoji">${ah.emoji}</span>
+      <div class="alt-info">
+        <div class="alt-name">${ah.name}</div>
+        <div class="alt-desc">${ah.benefitShort}</div>
+      </div>
+      <span class="alt-tag" style="background:${bgColor}20;color:${bgColor};">${catNames[ah.category]}</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('result-alts').innerHTML = `
+    <h3>🔄 其他推荐</h3>
+    <div style="display:flex;flex-direction:column;gap:10px;">${altHtml}</div>
+  `;
+
+  // Show result
+  document.getElementById('quiz-result').classList.add('show');
+  document.getElementById('quiz-result').querySelectorAll('.fade-in').forEach(el => el.classList.add('visible'));
+  document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function showAlt(id) {
+  const h = habits.find(h => h.id === id);
+  if (!h) return;
+
+  const timeText = h.time === 0 ? '不花额外时间' :
+                   h.time < 60 ? `${h.time} 秒` :
+                   h.time < 3600 ? `${h.time / 60} 分钟` : `${h.time / 3600} 小时`;
+  const catNames = {
+    'health': '身体健康', 'diet': '饮食营养', 'sleep': '睡眠恢复',
+    'mental': '心理健康', 'growth': '个人成长', 'productivity': '效率提升',
+    'social': '社交关系', 'digital': '数字健康'
+  };
+
+  document.getElementById('result-main').innerHTML = `
+    <div class="result-habit-emoji">${h.emoji}</div>
+    <div class="result-badge">📌 你选择了</div>
+    <div class="result-habit-name">${h.name}</div>
+    <div style="font-size:14px;opacity:0.85;margin-top:8px;line-height:1.6;">${h.desc}</div>
+    <div class="result-meta">
+      <span>⏱ ${timeText}</span>
+      <span>🏷️ ${catNames[h.category]}</span>
+    </div>
+  `;
+
+  document.getElementById('result-reason').innerHTML = `<strong>💡 ${h.benefitShort}</strong><br/>${h.reason ? h.reason : '这也是非常适合你的选择，同样值得坚持！'}`;
+  document.getElementById('result-science').innerHTML = `
+    <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2.5" style="display:inline-block;vertical-align:middle;margin-right:2px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> 科学依据</h3>
+    <p>${h.science}</p>
+  `;
+  document.getElementById('result-benefits').innerHTML = `
+    <h3>✅ 坚持下去，你会获得</h3>
+    <ul>${h.benefits.map(b => `<li>${b}</li>`).join('')}</ul>
+  `;
+  document.getElementById('result-tips').innerHTML = `
+    <h3>💡 实践建议</h3>
+    <p><strong>如何开始：</strong>${h.tip}</p>
+    <p style="margin-top:8px;"><strong>如果遇到困难：</strong>${h.counter}</p>
+    ${h.encouragement ? `<div style="margin-top:14px;padding:12px 16px;background:linear-gradient(135deg,rgba(124,58,237,0.06),rgba(5,150,105,0.06));border-radius:12px;font-size:14px;color:var(--text-body);line-height:1.7;"><strong>✨ ${h.emoji} 想对你说：</strong><br/>${h.encouragement}</div>` : ''}
+  `;
+
+  document.getElementById('result-main').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function restart() {
+  answers.length = 0;
+  document.getElementById('quiz-result').classList.remove('show');
+  document.getElementById('quiz-result').querySelectorAll('.fade-in').forEach(el => el.classList.remove('visible'));
+  renderStep(0);
+}
+
+// Init
+loadHabits();
+</script>
+</body>
+</html>

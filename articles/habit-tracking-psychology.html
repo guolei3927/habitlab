@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#FDFCFF" />
+  <meta name="description" content="小学老师让大家在墙上画正字追踪阅读。半年后坚持画正字的孩子，阅读量是其他同学的5倍。看见进步的视觉魔力。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    
+    /* Article-specific styles — reused from H5 */
+    .formula-card {
+      background: linear-gradient(135deg, #14B8A6 0%, #0EA5E9 100%);
+      border-radius: 20px; padding: 36px 32px; text-align: center; color: white;
+      margin: 28px 0; position: relative; overflow: hidden;
+    }
+    .formula-card::before {
+      content: ''; position: absolute; top: -40px; right: -40px;
+      width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.06);
+    }
+    .formula-main { font-size: clamp(2.8rem, 8vw, 4.5rem); font-weight: 900; font-family: 'Raleway', sans-serif; letter-spacing: -0.03em; line-height: 1; margin-bottom: 8px; }
+    .formula-sub { font-size: 14px; opacity: 0.8; margin-bottom: 20px; }
+    .formula-eq { font-family: 'Courier New', monospace; font-size: 15px; background: rgba(255,255,255,0.12); padding: 8px 16px; border-radius: 8px; display: inline-block; }
+
+    .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+    .stat-card {
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 16px;
+      padding: 22px 18px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; cursor: default;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(124,58,237,0.1); }
+    .stat-number { font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 900; color: var(--primary); line-height: 1; margin-bottom: 6px; font-family: 'Raleway', sans-serif; }
+    .stat-label { font-size: 12px; color: var(--text-muted); font-weight: 500; line-height: 1.4; }
+
+    .research-block {
+      background: var(--green-light); border-left: 4px solid var(--green);
+      border-radius: 0 16px 16px 0; padding: 24px; margin: 28px 0;
+    }
+    .research-tag { font-size: 11px; font-weight: 700; color: #065F46; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 12px; }
+    .research-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(16,185,129,0.2); }
+    .research-item:last-child { border-bottom: none; }
+    .research-dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+    .research-text { font-size: 14px; color: #065F46; line-height: 1.6; }
+    .research-text strong { font-weight: 700; }
+
+    .quote-block {
+      background: var(--primary-pale); border-radius: 16px;
+      padding: 28px 28px 28px 32px; margin: 28px 0; position: relative;
+    }
+    .quote-mark { font-size: 72px; font-family: Georgia, serif; color: var(--primary-light); line-height: 0.6; position: absolute; top: 20px; left: 16px; opacity: 0.4; }
+    .quote-text { font-family: 'Lora', 'PingFang SC', serif; font-size: 1.1rem; color: var(--text); font-style: italic; line-height: 1.8; padding-left: 16px; }
+
+    .timeline { margin: 28px 0; }
+    .timeline-item { display: flex; gap: 16px; }
+    .timeline-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+    .timeline-dot {
+      width: 12px; height: 12px; border-radius: 50%; background: var(--border);
+      border: 2px solid var(--primary-pale); flex-shrink: 0; margin-top: 5px; transition: all 0.3s;
+    }
+    .timeline-item.highlight .timeline-dot { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-pale); }
+    .timeline-line { width: 2px; flex: 1; background: var(--primary-pale); min-height: 24px; }
+    .timeline-content { padding-bottom: 24px; }
+    .timeline-period { font-size: 12px; font-weight: 700; color: var(--primary-light); margin-bottom: 3px; }
+    .timeline-desc { font-size: 15px; color: #374151; line-height: 1.6; }
+    .timeline-item.highlight .timeline-desc { color: var(--text); font-weight: 600; }
+
+    .habit-grid { display: grid; gap: 16px; margin: 28px 0; }
+    .habit-card {
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 16px;
+      padding: 22px 22px; cursor: pointer; transition: all 0.25s; position: relative; overflow: hidden;
+    }
+    .habit-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--primary); opacity: 0; transition: opacity 0.25s; }
+    .habit-card:hover { border-color: var(--primary); box-shadow: 0 6px 24px rgba(124,58,237,0.1); transform: translateY(-2px); }
+    .habit-card:hover::before { opacity: 1; }
+    .habit-card.selected { border-color: var(--green); background: var(--green-light); }
+    .habit-card.selected::before { background: var(--green); opacity: 1; }
+    .habit-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .habit-letter {
+      width: 36px; height: 36px; background: var(--primary-pale); color: var(--primary);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 15px; flex-shrink: 0;
+    }
+    .habit-card.selected .habit-letter { background: var(--green); color: white; }
+    .habit-name { font-weight: 700; font-size: 15px; color: var(--text); }
+    .habit-time { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .habit-effect { font-size: 14px; color: #374151; line-height: 1.6; margin-bottom: 8px; }
+    .habit-outcome { font-size: 13px; color: var(--primary); font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .habit-card.selected .habit-outcome { color: #065F46; }
+
+    .cta-section {
+      background: linear-gradient(135deg, #1E1B4B 0%, var(--primary) 100%);
+      border-radius: 24px; padding: 48px 32px; text-align: center; margin: 40px 0;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before { content: ''; position: absolute; top: -60px; right: -60px; width: 200px; height: 200px; background: rgba(255,255,255,0.04); border-radius: 50%; }
+    .cta-big-number {
+      font-size: clamp(5rem, 20vw, 9rem); font-weight: 900; color: rgba(255,255,255,0.08);
+      line-height: 1; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      white-space: nowrap; font-family: 'Raleway', sans-serif; letter-spacing: -0.05em;
+    }
+    .cta-content { position: relative; z-index: 2; }
+    .cta-title { font-family: 'Lora', 'PingFang SC', serif; font-size: 1.5rem; font-weight: 700; color: white; margin-bottom: 12px; }
+    .cta-subtitle { font-size: 15px; color: rgba(255,255,255,0.75); margin-bottom: 32px; }
+
+    .challenge-banner {
+      border: 2px dashed var(--primary-light); border-radius: 16px;
+      padding: 28px; text-align: center; margin: 32px 0;
+    }
+    .challenge-title { font-weight: 800; font-size: 16px; color: var(--primary); margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .challenge-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
+    .challenge-selected {
+      margin-top: 16px; background: var(--green); color: white; border-radius: 10px;
+      padding: 10px 20px; font-size: 14px; font-weight: 600; display: none;
+    }
+    .challenge-selected.visible { display: inline-block; }
+
+    @media (max-width: 480px) {
+      .cta-section { padding: 40px 20px; }
+      .formula-card { padding: 28px 20px; }
+      .stats-row { gap: 12px; }
+      .stat-card { padding: 18px 14px; }
+      .habit-card { padding: 18px 16px; }
+      .research-block { padding: 20px 16px; }
+      .quote-block { padding: 24px 20px 24px 28px; }
+      .quote-mark { font-size: 56px; top: 16px; left: 12px; }
+      .challenge-banner { padding: 20px 16px; }
+      .habit-header { gap: 10px; }
+      .habit-letter { width: 32px; height: 32px; font-size: 13px; }
+    }
+    @media (max-width: 360px) {
+      .stats-row { grid-template-columns: 1fr !important; }
+      .formula-main { font-size: 2.4rem; }
+      .habit-name { font-size: 14px; }
+    }
+  
+  </style>
+</head>
+<body>
+
+<div class="nav-overlay"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><span class="logo-icon">🧪</span><span class="logo-text">Habit<span class="logo-highlight">Lab</span></span></a>
+    <div class="nav-links">
+      <a href="/">首页</a>
+      <a href="/articles.html" class="active">文章</a>
+      <a href="/lab.html">实验室</a>
+      <a href="/about.html">关于</a>
+      <a href="/articles/the-power-of-micro-habits.html" class="nav-cta">开始阅读</a>
+    </div>
+    <button class="nav-hamburger" aria-label="菜单"><span></span></button>
+  </div>
+</nav>
+
+<article class="article-detail">
+  <a href="/articles.html" class="back-link">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    返回文章列表
+  </a>
+
+  <div class="meta">
+    <span class="tag" style="background: #FEF3C7; color: #D97706;">方法论篇</span>
+    <span>2026-04-18</span>
+    <span>阅读约 5 分钟</span>
+  </div>
+
+  <h1>看见进步，才能持续进步</h1>
+
+  <p>小学一年级，老师让大家在墙上贴一张纸。</p>
+  <p>规则很简单：每天读完一本书，就在纸上画一个正字的一笔。读完5本，画完一个正字。</p>
+  <p>一个月后，全班只有一半同学还在坚持。</p>
+  <p>但半年后，那几个还在画正字的孩子，<strong>阅读量已经是其他同学的5倍</strong>。</p>
+
+  <div class="formula-card fade-in">
+    <div class="formula-main">5x</div>
+    <div class="formula-sub">可视化追踪的魔力</div>
+    <div class="formula-eq">看见进步 → 多巴胺奖励 → 更有动力 → 更多进步</div>
+  </div>
+
+  <p>老师后来回忆说："那个正字没什么魔力。魔力在于——<strong>孩子每天都能看见自己在进步。</strong>"</p>
+
+  <h2 style="font-family:'Lora',serif; font-size:1.4rem; margin-top:48px;">为什么看见这么重要？</h2>
+
+  <p>大脑的奖励系统有一个特点：<strong>它对可视化的反馈特别敏感。</strong></p>
+  <p>当你完成一个任务并在纸上画了一笔时，你的大脑会释放少量的多巴胺——一种让你感到满足和愉悦的神经递质。这个多巴胺信号会强化你的行为，让你更有动力在明天重复做同样的事。</p>
+
+  <div class="research-block fade-in">
+    <div class="research-tag">🧠 多巴胺回路</div>
+    <div class="research-item"><div class="research-dot"></div><div class="research-text">完成任务 → 获得<strong>视觉反馈</strong>（画一笔/打一个勾）</div></div>
+    <div class="research-item"><div class="research-dot"></div><div class="research-text">大脑释放<strong>多巴胺</strong> → 产生满足感</div></div>
+    <div class="research-item"><div class="research-dot"></div><div class="research-text">满足感强化行为 → 明天更有动力做</div></div>
+    <div class="research-item"><div class="research-dot"></div><div class="research-text">形成<strong>正反馈循环</strong> → 习惯越来越稳固</div></div>
+  </div>
+
+  <h2 style="font-family:'Lora',serif; font-size:1.4rem; margin-top:48px;">不要断链效应</h2>
+
+  <p>喜剧演员 Jerry Seinfeld 有一个著名的生产力方法：</p>
+
+  <div class="quote-block fade-in" style="background:#D1FAE5; border-left-color:#10B981;">
+    <div class="quote-mark" style="color:#10B981;">"</div>
+    <div class="quote-text">每年买一个大挂历，放在墙上。每天写了东西，就在日历上画一个大红X。几天之后，你会看到一条链子。你唯一的工作就是——不要让这条链子断掉。</div>
+  </div>
+
+  <p>当你看到连续20天的红X时，你会为了不断链而做本来不想做的事。不是因为你有多自律，而是因为<strong>你不想破坏那个美丽的连续记录</strong>。</p>
+
+  <div class="stats-row fade-in">
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--green);">3天</div>
+      <div class="stat-label">连续追踪3天后<br/>动力开始增强</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--green);">21天</div>
+      <div class="stat-label">连续21天后<br/>不断链心理形成</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color:var(--green);">66天</div>
+      <div class="stat-label">连续66天后<br/>行为基本自动化</div>
+    </div>
+  </div>
+
+  <h2 style="font-family:'Lora',serif; font-size:1.4rem; margin-top:48px;">错过一天没关系</h2>
+
+  <p><strong>偶尔中断是正常的，不要因为断了一天就放弃整个计划。</strong></p>
+  <p>研究表明，错过一天对习惯养成的影响几乎为零。真正有害的不是断了一天，而是因为断了一天而自暴自弃，然后断了两个月。</p>
+  <p>记住：<strong>你追求的是完成率，不是完美率。</strong>一年做300天，远比做7天然后放弃要好得多。</p>
+
+  <div class="quote-block fade-in">
+    <div class="quote-mark">"</div>
+    <div class="quote-text">不要相信你的感觉，相信你的记录。感觉会说谎，但正字不会。</div>
+  </div>
+
+  <h2 style="font-family:'Lora',serif; font-size:1.4rem; margin-top:48px;">选一个，今天就开始</h2>
+  <p>不需要大张旗鼓，选一个你觉得"太简单了不叫事"的小事。<strong>点击选择你今天要开始的习惯：</strong></p>
+
+
+  <div class="habit-grid" id="habit-grid">
+    <div class="habit-card" onclick="selectHabit(this, 'A', '早起后喝一杯水')">
+      <div class="habit-header"><div class="habit-letter">A</div><div><div class="habit-name">早起后喝一杯水</div><div class="habit-time">耗时 30 秒</div></div></div>
+      <div class="habit-effect">激活代谢，补充夜间流失的水分</div>
+      <div class="habit-outcome"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1年后：皮肤状态和消化系统都有改善</div>
+    </div>
+    <div class="habit-card" onclick="selectHabit(this, 'B', '每坐1小时站起来伸个懒腰')">
+      <div class="habit-header"><div class="habit-letter">B</div><div><div class="habit-name">每坐1小时伸个懒腰</div><div class="habit-time">耗时 30 秒</div></div></div>
+      <div class="habit-effect">缓解腰椎压力，促进血液循环</div>
+      <div class="habit-outcome"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1年后：腰酸背痛明显减少，精力更持久</div>
+    </div>
+    <div class="habit-card" onclick="selectHabit(this, 'C', '吃饭时多嚼5下')">
+      <div class="habit-header"><div class="habit-letter">C</div><div><div class="habit-name">吃饭时多嚼 5 下</div><div class="habit-time">每顿多 2 分钟</div></div></div>
+      <div class="habit-effect">减轻胃肠负担，自然减少进食量</div>
+      <div class="habit-outcome"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1年后：消化变好，体重可能自然降 3-5 斤</div>
+    </div>
+    <div class="habit-card" onclick="selectHabit(this, 'D', '睡前放下手机发呆5分钟')">
+      <div class="habit-header"><div class="habit-letter">D</div><div><div class="habit-name">睡前放下手机发呆5分钟</div><div class="habit-time">耗时 5 分钟</div></div></div>
+      <div class="habit-effect">降低蓝光刺激，帮助大脑进入睡眠模式</div>
+      <div class="habit-outcome"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>1年后：入睡更快，睡眠质量显著提升</div>
+    </div>
+  </div>
+  <div class="challenge-banner" id="challenge-banner">
+    <div class="challenge-title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8.56 2.9A7 7 0 0 1 19 9v4a7 7 0 0 1-7 7H5a7 7 0 0 1-7-7V9a7 7 0 0 1 .44-2.44"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="2" x2="12" y2="16"/></svg>
+      今日微习惯挑战
+    </div>
+    <div class="challenge-desc">从上面选一个习惯，今天就开始做。<br/>一年后，回来告诉我们你的变化。</div>
+    <div class="challenge-selected" id="challenge-selected"></div>
+  </div>
+
+
+  <div class="cta-section fade-in">
+    <div class="cta-big-number">5x</div>
+    <div class="cta-content">
+      <div class="cta-title">看见的力量</div>
+      <div class="cta-subtitle">可视化追踪让坚持效果提升5倍。不是因为你更有毅力了，而是你的大脑被奖励了。</div>
+      <a href="#habit-grid" class="btn btn-green" style="background:white; color:var(--primary);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px;height:16px;"><polyline points="20 6 9 17 4 12"/></svg>
+        选择我的第一个微习惯
+      </a>
+    </div>
+  </div>
+
+  <div style="text-align: center; padding: 32px 0; border-top: 1px solid var(--border); margin-top: 48px;">
+    <p style="font-family:'Lora',serif; font-style:italic; font-size:15px; color:var(--text-muted); max-width:400px; margin:0 auto 16px; line-height:1.8;">
+      不要相信你的感觉，相信你的记录。感觉会说谎，但正字不会。
+    </p>
+    <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+      <a href="/articles.html" class="btn btn-outline" style="font-size:13px; padding:10px 20px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        更多文章
+      </a>
+      <a href="/lab/habit-selector.html" class="btn btn-primary" style="font-size:13px; padding:10px 20px;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="10" y2="10"/><line x1="14" y1="10" x2="16" y2="10"/></svg>
+        试试习惯匹配器
+      </a>
+    </div>
+  </div>
+</article>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-icon">🧪</span> HabitLab</div>
+      <div class="footer-links">
+        <a href="/">首页</a>
+        <a href="/articles.html">文章</a>
+        <a href="/lab.html">实验室</a>
+        <a href="/about.html">关于</a>
+      </div>
+      <div class="footer-copy">&copy; 2026 HabitLab. 用微习惯的科学方法，持续变好。</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+<script>
+let selectedCard = null;
+function selectHabit(card, letter, name) {
+  if (selectedCard) selectedCard.classList.remove('selected');
+  card.classList.add('selected');
+  selectedCard = card;
+  const display = document.getElementById('challenge-selected');
+  display.textContent = '✓ 已选择：选项 ' + letter + ' — ' + name;
+  display.classList.add('visible');
+}
+</script>
+</body>
+</html>

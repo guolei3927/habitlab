@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#FDFCFF" />
+  <meta name="description" content="HabitLab 的故事 — 用科学的方法帮助普通人建立微习惯，持续变好。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .about-story { max-width: 640px; margin: 0 auto; }
+    .about-story p { font-size: 16px; color: var(--text-body); line-height: 1.9; margin-bottom: 20px; }
+    .about-story h2 { font-family: 'Lora', serif; font-size: 1.4rem; margin-top: 40px; margin-bottom: 12px; }
+    .about-values { display: grid; gap: 16px; margin-top: 32px; }
+    .about-value {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 24px; border-radius: var(--radius); background: var(--card);
+      border: 1.5px solid var(--border);
+    }
+    .about-value-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .about-value h3 { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+    .about-value p { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin: 0; }
+    .about-contact {
+      background: linear-gradient(135deg, var(--primary), #5B21B6);
+      border-radius: 20px; padding: 40px 32px; text-align: center; color: white; margin-top: 48px;
+    }
+    .about-contact h2 { font-family: 'Lora', serif; font-size: 1.4rem; margin-bottom: 10px; color: white; }
+    .about-contact p { font-size: 14px; opacity: 0.8; margin-bottom: 24px; }
+    @media(min-width:600px){ .about-values{grid-template-columns:1fr 1fr;} }
+    @media (max-width: 480px) {
+      .about-story p { font-size: 15px; }
+      .about-value { padding: 18px; gap: 12px; }
+      .about-value h3 { font-size: 14px; }
+      .about-contact { padding: 32px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Mobile Menu Overlay -->
+<div class="nav-overlay"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><span class="logo-icon">🧪</span><span class="logo-text">Habit<span class="logo-highlight">Lab</span></span></a>
+    <div class="nav-links">
+      <a href="/">首页</a><a href="/articles.html">文章</a><a href="/lab.html">实验室</a><a href="/about.html" class="active">关于</a>
+      <a href="/articles/the-power-of-micro-habits.html" class="nav-cta">开始阅读</a>
+    </div>
+    <button class="nav-hamburger" aria-label="菜单"><span></span></button>
+  </div>
+</nav>
+
+<div class="page-header fade-in">
+  <div class="container">
+    <div class="hero-badge" style="margin-bottom: 16px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      关于我们
+    </div>
+    <h1>HabitLab 的故事</h1>
+  </div>
+</div>
+
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="about-story fade-in">
+      <p>2026年初，一个做 IT 的家伙翻看了自己的体检报告，然后沉默了很久。</p>
+      <p>报告上没有大问题，但各项指标都在"临界值"附近徘徊——体重偏高、血脂边缘、尿酸警戒。医生说："你现在不胖，但再过几年就不好说了。"</p>
+      <p>他试过很多方法：办健身卡（去了3次）、下载运动App（用了2天）、发誓早起跑步（坚持了1周）。每次都以失败告终。</p>
+      <p>后来他发现了<strong>微习惯</strong>这个概念——不靠意志力，不改变作息，只是每天做一件小到不可能失败的事。</p>
+      <p>他选择了最简单的：每天吃完午饭，站起来走2分钟。就这样。</p>
+      <p>半年后，体重降了8斤，所有体检指标回到正常范围。他身边的朋友开始问他："你怎么了？最近状态很好。"</p>
+      <p>那一刻他意识到：<strong>真正改变生活的，从来不是"下定决心"，而是那些小到不值得提起的事。</strong></p>
+      <div class="divider"></div>
+      <h2>HabitLab 的使命</h2>
+      <p>HabitLab 诞生于一个简单的信念：普通人也可以持续变好，前提是方法要对。</p>
+      <p>我们做的事情很简单：<br/>
+      1. 用科学研究告诉你，为什么微小的改变真的有效<br/>
+      2. 用方法论教你，如何设计自己的第一个微习惯<br/>
+      3. 用真实案例给你信心，你不需要成为超人</p>
+      <h2>我们的价值观</h2>
+    </div>
+
+    <div class="about-values">
+      <div class="about-value fade-in">
+        <div class="about-value-icon" style="background:var(--primary-pale);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        <div><h3>科学而非鸡汤</h3><p>每一条建议都有研究支撑。引用《柳叶刀》等顶级期刊的发现，而不是泛泛的鼓励。</p></div>
+      </div>
+      <div class="about-value fade-in">
+        <div class="about-value-icon" style="background:var(--green-light);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div><h3>简单而非复杂</h3><p>最好的方法就是最简单的方法。如果你需要"下定决心"才能开始，那方法本身就有问题。</p></div>
+      </div>
+      <div class="about-value fade-in">
+        <div class="about-value-icon" style="background:#FEF3C7;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div><h3>真实而非完美</h3><p>分享真实的改变故事，包括失败和挫折。你不需要成为完美的人，只需要每天进步1%。</p></div>
+      </div>
+      <div class="about-value fade-in">
+        <div class="about-value-icon" style="background:#FCE7F3;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DB2777" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div><h3>可持续而非爆发</h3><p>我们相信：找到对的方法，让改变自然发生。</p></div>
+      </div>
+    </div>
+
+    <div class="about-contact fade-in" style="max-width:640px;margin:48px auto 0;">
+      <h2>加入我们</h2>
+      <p>关注微信公众号「健康微习惯」，和我们一起用微习惯持续变好</p>
+      <div style="background:white;border-radius:14px;padding:20px;display:inline-block;color:var(--text-muted);font-size:13px;">
+        <div style="width:140px;height:140px;margin:0 auto;background:var(--primary-pale);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span style="font-weight:700;color:var(--primary);">健康微习惯</span>
+        </div>
+        <div style="margin-top:10px;text-align:center;">微信扫码关注</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-icon">🧪</span> HabitLab</div>
+      <div class="footer-links"><a href="/">首页</a><a href="/articles.html">文章</a><a href="/lab.html">实验室</a><a href="/about.html">关于</a></div>
+      <div class="footer-copy">© 2026 HabitLab. 用微习惯的科学方法，持续变好。</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

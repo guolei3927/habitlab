@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#FDFCFF" />
+  <title>复利计算器 — HabitLab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- Mobile Menu Overlay -->
+<div class="nav-overlay"></div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><span class="logo-icon">🧪</span><span class="logo-text">Habit<span class="logo-highlight">Lab</span></span></a>
+    <div class="nav-links">
+      <a href="/">首页</a>
+      <a href="/articles.html">文章</a>
+      <a href="/lab.html" class="active">实验室</a>
+      <a href="/about.html">关于</a>
+      <a href="/articles/the-power-of-micro-habits.html" class="nav-cta">开始阅读</a>
+    </div>
+    <button class="nav-hamburger" aria-label="菜单"><span></span></button>
+  </div>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header fade-in" style="padding-bottom: 24px;">
+  <div class="container">
+    <a href="/lab.html" class="back-link" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--text-muted);font-weight:600;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+      返回实验室
+    </a>
+    <h1 style="margin-top: 16px;">微习惯复利计算器</h1>
+    <p style="color: var(--text-muted); font-size: 15px;">看看你每天的小投入，一年后会变成什么样</p>
+  </div>
+</div>
+
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="calc-container">
+
+      <!-- Input -->
+      <div class="card fade-in" style="padding: 32px; margin-bottom: 24px;">
+        <div class="calc-input-group">
+          <label>你的微习惯是什么？</label>
+          <input type="text" class="calc-input" id="habitName" placeholder="例如：每天多喝一杯水" maxlength="30" />
+        </div>
+        <div class="calc-input-group">
+          <label>每天需要花多少时间？</label>
+          <div class="input-with-suffix">
+            <input type="number" class="calc-input" id="habitTime" placeholder="5" min="1" max="120" value="5" />
+            <span class="suffix">分钟</span>
+          </div>
+        </div>
+        <div class="calc-input-group">
+          <label>你打算坚持多久？</label>
+          <div class="input-with-suffix">
+            <input type="number" class="calc-input" id="habitDays" placeholder="365" min="1" max="3650" value="365" />
+            <span class="suffix">天</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 8px;" onclick="calculate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+          计算我的复利
+        </button>
+      </div>
+
+      <!-- Result -->
+      <div class="calc-result" id="result">
+        <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 8px; font-weight: 600;" id="result-label">你的「每天多喝一杯水」复利结果</div>
+        <div class="calc-result-number" id="result-number">1,825</div>
+        <div class="calc-result-unit" id="result-unit">分钟 = 约 30 小时</div>
+
+        <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border);">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; text-align: center;">
+            <div>
+              <div style="font-size: 1.6rem; font-weight: 900; color: var(--green);" id="result-hours">30</div>
+              <div style="font-size: 12px; color: var(--text-muted);">总投入小时</div>
+            </div>
+            <div>
+              <div style="font-size: 1.6rem; font-weight: 900; color: var(--primary);" id="result-compound">37.8×</div>
+              <div style="font-size: 12px; color: var(--text-muted);">等效进步倍数</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="calc-result-desc" id="result-desc" style="margin-top: 24px; padding: 20px; background: var(--primary-pale); border-radius: 12px;">
+          如果你每天坚持花 <strong>5分钟</strong> 做「每天多喝一杯水」，一年后你将投入 <strong>30小时</strong>。如果这种微小改变能带来 1% 的持续进步，一年后你的状态将提升 <strong>37.8倍</strong>。
+        </div>
+      </div>
+
+      <!-- Quick Presets -->
+      <div style="margin-top: 32px;" class="fade-in">
+        <p style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">快速试试这些常见微习惯：</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+          <button class="tab" onclick="preset('早起后喝一杯水', 0.5)">喝水 30秒</button>
+          <button class="tab" onclick="preset('每坐1小时伸个懒腰', 0.5)">伸懒腰 30秒</button>
+          <button class="tab" onclick="preset('饭后散步2分钟', 2)">散步 2分钟</button>
+          <button class="tab" onclick="preset('吃饭多嚼5下', 2)">多嚼5下 2分钟</button>
+          <button class="tab" onclick="preset('睡前冥想5分钟', 5)">冥想 5分钟</button>
+          <button class="tab" onclick="preset('每天阅读10分钟', 10)">阅读 10分钟</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-icon">🧪</span> HabitLab</div>
+      <div class="footer-links">
+        <a href="/">首页</a>
+        <a href="/articles.html">文章</a>
+        <a href="/lab.html">实验室</a>
+        <a href="/about.html">关于</a>
+      </div>
+      <div class="footer-copy">© 2026 HabitLab. 用微习惯的科学方法，持续变好。</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+<script>
+function preset(name, time) {
+  document.getElementById('habitName').value = name;
+  document.getElementById('habitTime').value = time;
+  calculate();
+}
+
+function calculate() {
+  const name = document.getElementById('habitName').value.trim() || '这个微习惯';
+  const time = parseFloat(document.getElementById('habitTime').value) || 5;
+  const days = parseInt(document.getElementById('habitDays').value) || 365;
+
+  const totalMinutes = time * days;
+  const totalHours = totalMinutes / 60;
+
+  // Compound factor: (1 + 0.01)^days
+  const compound = Math.pow(1.01, Math.min(days, 365));
+
+  // Update result
+  document.getElementById('result-label').textContent = `你的「${name}」复利结果`;
+  document.getElementById('result-number').textContent = totalMinutes.toLocaleString();
+  document.getElementById('result-unit').textContent = `分钟 = 约 ${totalHours.toFixed(0)} 小时`;
+  document.getElementById('result-hours').textContent = totalHours.toFixed(0);
+  document.getElementById('result-compound').textContent = compound.toFixed(1) + '×';
+  document.getElementById('result-desc').innerHTML = `如果你每天坚持花 <strong>${time}分钟</strong> 做「${name}」，<strong>${days}天</strong>后你将投入 <strong>${totalHours.toFixed(0)}小时</strong>。如果这种微小改变能带来 1% 的持续进步，一年后你的状态将提升 <strong>${compound.toFixed(1)}倍</strong>。`;
+
+  document.getElementById('result').classList.add('show');
+  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>

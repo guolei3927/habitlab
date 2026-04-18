@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=1.0, viewport-fit=cover" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#FDFCFF" />
+  <meta name="description" content="HabitLab — 用互动工具帮你理解和践行微习惯。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- Mobile Menu Overlay -->
+<div class="nav-overlay"></div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo"><span class="logo-icon">🧪</span><span class="logo-text">Habit<span class="logo-highlight">Lab</span></span></a>
+    <div class="nav-links">
+      <a href="/">首页</a>
+      <a href="/articles.html">文章</a>
+      <a href="/lab.html" class="active">实验室</a>
+      <a href="/about.html">关于</a>
+      <a href="/articles/the-power-of-micro-habits.html" class="nav-cta">开始阅读</a>
+    </div>
+    <button class="nav-hamburger" aria-label="菜单"><span></span></button>
+  </div>
+</nav>
+
+<!-- Page Header -->
+<div class="page-header fade-in">
+  <div class="container">
+    <div class="hero-badge" style="margin-bottom: 16px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+      互动工具
+    </div>
+    <h1>微习惯实验室</h1>
+    <p style="color: var(--text-muted); font-size: 15px; max-width: 480px; margin: 8px auto 0;">用数据理解微习惯的力量，让改变可视化</p>
+  </div>
+</div>
+
+<!-- Tools -->
+<section class="section fade-in">
+  <div class="container">
+    <div class="lab-grid">
+
+      <!-- Tool 1: Compound Calculator -->
+      <a href="/lab/compound-calculator.html" class="card lab-card lab-card-primary">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" style="margin-bottom: 16px;">
+          <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+          <polyline points="16 7 22 7 22 13"/>
+        </svg>
+        <h3>复利计算器</h3>
+        <p>输入你的微习惯和每天投入时间，看看一年后你会积累多少。</p>
+        <span class="btn btn-primary">立即体验</span>
+      </a>
+
+      <!-- Tool 2: Habit Selector -->
+      <a href="/lab/habit-selector.html" class="card lab-card lab-card-green">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" style="margin-bottom: 16px;">
+          <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+          <path d="m9 12 2 2 4-4"/>
+        </svg>
+        <h3>习惯匹配器</h3>
+        <p>回答几个问题，为你推荐最适合你的第一个微习惯。</p>
+        <span class="btn btn-green">开始测试</span>
+      </a>
+
+      <!-- Tool 3: Coming Soon -->
+      <div class="card lab-card" style="background: linear-gradient(135deg, #F59E0B, #EF4444); color: white; opacity: 0.7;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" style="margin-bottom: 16px;">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+          <path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01M16 18h.01"/>
+        </svg>
+        <h3>21天打卡</h3>
+        <p>记录你的每日微习惯，可视化你的坚持成果。</p>
+        <span class="btn" style="background: rgba(255,255,255,0.2); color: white; cursor: default;">即将上线</span>
+      </div>
+
+      <!-- Tool 4: Coming Soon -->
+      <div class="card lab-card" style="background: linear-gradient(135deg, #0EA5E9, #6366F1); color: white; opacity: 0.7;">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" style="margin-bottom: 16px;">
+          <path d="M18 20V10"/>
+          <path d="M12 20V4"/>
+          <path d="M6 20v-6"/>
+        </svg>
+        <h3>习惯对比图</h3>
+        <p>对比不同微习惯的长期收益，找到最高效的改变路径。</p>
+        <span class="btn" style="background: rgba(255,255,255,0.2); color: white; cursor: default;">即将上线</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-logo"><span class="logo-icon">🧪</span> HabitLab</div>
+      <div class="footer-links">
+        <a href="/">首页</a>
+        <a href="/articles.html">文章</a>
+        <a href="/lab.html">实验室</a>
+        <a href="/about.html">关于</a>
+      </div>
+      <div class="footer-copy">© 2026 HabitLab. 用微习惯的科学方法，持续变好。</div>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
+</html>
